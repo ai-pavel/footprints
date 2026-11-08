@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Footprints</title>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+
+<div id="floating-panel">
+    <div class="panel-header">
+        <h1>🌍 Footprints</h1>
+        <span id="theme-toggle-icon" onclick="toggleTheme()" title="Toggle Dark Mode">🌚</span>
+    </div>
+    
+    <div class="legend-row">
+        <div class="legend-item">
+            <div class="color-box box-residence"></div><span>Residence</span>
+        </div>
+        <div class="legend-item">
+            <div class="color-box box-visit"></div><span>Visited</span>
+        </div>
+        <div class="legend-item">
+            <div class="color-box box-layover"></div><span>Layover</span>
+        </div>
+    </div>
+
+    <div class="collapsible-header" id="controls-trigger" onclick="toggleControls()">
+        <span>Controls</span>
+        <span id="controls-chevron" class="chevron">▼</span>
+    </div>
+
+    <div class="collapsible-body" id="controls-body">
+    <div class="timeline-container">
+        <div class="time-display">
+            <span>History</span>
+            <span id="current-date-label">Loading...</span>
+        </div>
+        <div class="timeline-controls">
+            <button class="play-btn" id="play-pause-btn" onclick="togglePlay()">▶</button>
+            <input type="range" id="time-slider" min="0" max="100" value="100" oninput="handleSliderChange()">
+        </div>
+    </div>
+
+    <div class="control-row">
+        <span class="control-label">Aviation</span>
+        <label class="toggle-switch" title="Toggle aviation layer">
+            <input type="checkbox" id="aviation-toggle" onchange="toggleAviation()">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+
+    <div class="control-row">
+        <span class="control-label">Companion</span>
+        <select class="proj-select" id="companion-filter" onchange="changeCompanionFilter()">
+            <option value="all" selected>All</option>
+            <option value="solo">👤 Solo</option>
+            <option value="partner">👥 Couple</option>
+            <option value="family">👨‍👩‍👧 Family</option>
+        </select>
+    </div>
+
+    <div class="control-row">
+        <span class="control-label">Projection</span>
+        <select class="proj-select" id="projection-select" onchange="updateProjection()">
+            <option value="mercator" selected>🌐 Mercator</option>
+            <option value="natural">🌍 Natural Earth</option>
+            <option value="flat">🗺️ Flat Earth</option>
+        </select>
+    </div>
+    </div>
+</div>
+
+<div id="map-container">
+    <div id="tooltip"></div>
+</div>
+
+<button id="stats-trigger" onclick="toggleStatsPanel()">
+    <span>View Stats</span><span style="font-size: 1.2em">📊</span>
+</button>
+
+<div id="stats-overlay">
+    <div class="stats-header">
+        <h2>Travel Statistics</h2>
+        <button class="close-btn" onclick="toggleStatsPanel()">×</button>
+    </div>
+    <div class="stats-content">
+        <div class="stat-group">
+            <h3>Global Overview</h3>
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; justify-content: space-between;">
+                <div><div class="stat-number" id="stat-countries">0</div><div class="stat-sub">Countries</div></div>
+                <div><div class="stat-number" id="stat-trips">0</div><div class="stat-sub">Trips</div></div>
+                <div><div class="stat-number" id="stat-years">0</div><div class="stat-sub">Travel Years</div></div>
+                <div><div class="stat-number" id="stat-percentage">0%</div><div class="stat-sub">World Seen</div></div>
+            </div>
+            
+            <h3>Continent Coverage</h3>
+            <div id="continent-stats"></div>
+
+            <h3 style="margin-top: 2rem;">Cardinal Extremes</h3>
+            <div class="cardinal-grid" id="cardinal-stats"></div>
+        </div>
+        
+        <div class="stat-group">
+            <div style="display:flex; gap:3rem; margin-bottom:2rem; flex-wrap:wrap;">
+                <div>
+                    <h3 style="margin-top:0;">Trips per Companion</h3>
+                    <div id="companion-stats" style="display:flex; gap:1.5rem; flex-wrap:wrap;"></div>
+                </div>
+                <div>
+                    <h3 style="margin-top:0;">Countries per Companion</h3>
+                    <div id="companion-country-stats" style="display:flex; gap:1.5rem; flex-wrap:wrap;"></div>
+                </div>
+            </div>
+
+            <h3>Aviation Log</h3>
+            <div id="flight-stats" style="margin-bottom: 2rem;"></div>
+
+            <h3>Yearly Breakdown</h3>
+            <div id="year-stats"></div>
+        </div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <div class="sidebar-header">
+        <h2 id="sidebar-title">Location</h2>
+        <button class="close-btn" onclick="closeSidebar()">×</button>
+    </div>
+    <div class="sidebar-content" id="sidebar-body"></div>
+</div>
+
+<script src="src/app.js"></script>
+</body>
+</html>
